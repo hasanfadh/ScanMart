@@ -137,7 +137,7 @@ ScanMart addresses these issues by:
 ### Customer Interface
 
 #### Home Page
-![Home Page](public/screenshots/home.jpg)
+![Home Page](public/screenshots/home.png)
 *Modern landing page with category navigation and featured products*
 
 #### QR Scanner
