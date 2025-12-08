@@ -137,30 +137,30 @@ ScanMart addresses these issues by:
 ### Customer Interface
 
 #### Home Page
-![Home Page](screenshots/home.jpg)
+![Home Page](public/screenshots/home.jpg)
 *Modern landing page with category navigation and featured products*
 
 #### QR Scanner
-![QR Scanner](screenshots/scanner.png)
+![QR Scanner](public/screenshots/scanner.png)
 *Real-time camera QR code scanning*
 
 #### Product Detail
-![Product Detail](screenshots/product-detail.png)
+![Product Detail](public/screenshots/product-detail.png)
 *Comprehensive product information with generated QR code*
 
 #### Shopping Cart
-![Shopping Cart](screenshots/cart.png)
+![Shopping Cart](public/screenshots/cart.png)
 *Interactive cart with real-time calculations*
 
 #### Payment
-![Payment](screenshots/payment-1.png)
-![Payment-Success](screenshots/payment-2.png)
+![Payment](public/screenshots/payment-1.png)
+![Payment-Success](public/screenshots/payment-2.png)
 *QRIS payment simulation interface*
 
 ### Admin Interface
 
 #### Dashboard
-![Admin Dashboard](screenshots/admin-dashboard.png)
+![Admin Dashboard](public/screenshots/admin-dashboard.png)
 *Analytics dashboard with key metrics*
 
 #### Category Management
@@ -168,11 +168,11 @@ ScanMart addresses these issues by:
 *Category CRUD*
 
 #### Product Management
-![Products](screenshots/admin-products.png)
+![Products](public/screenshots/admin-products.png)
 *Product CRUD with QR code management*
 
 #### Order Details
-![Order Detail](screenshots/admin-order.png)
+![Order Detail](public/screenshots/admin-order.png)
 *Detailed order information*
 
 ---
