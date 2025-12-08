@@ -164,7 +164,7 @@ ScanMart addresses these issues by:
 *Analytics dashboard with key metrics*
 
 #### Category Management
-![Categories](screenshots/admin-categories.png)
+![Categories](public\screenshots\admin-categories.png)
 *Category CRUD*
 
 #### Product Management
