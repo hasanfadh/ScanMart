@@ -27,23 +27,20 @@ COPY . .
 # Install PHP dependencies
 RUN composer install --optimize-autoloader --no-dev --no-scripts --no-interaction
 
-# Install Node dependencies
+# Install Node dependencies and build
 RUN npm ci && npm run build && npm prune --omit=dev
 
-# Laravel setup
+# Laravel setup - Create directories and set permissions
 RUN mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs bootstrap/cache && \
     chmod -R 777 storage bootstrap/cache
 
-# Cache Laravel
-RUN php artisan config:cache && \
-    php artisan event:cache && \
-    php artisan route:cache && \
-    php artisan view:cache
-
 EXPOSE 8080
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8080"]
-
-# Run migrations on startup
-CMD php artisan migrate --force && \
+# Startup script with proper error handling
+CMD php artisan config:clear && \
+    php artisan cache:clear && \
+    php artisan migrate --force && \
+    php artisan config:cache && \
+    php artisan route:cache && \
+    php artisan view:cache && \
     php artisan serve --host=0.0.0.0 --port=8080
