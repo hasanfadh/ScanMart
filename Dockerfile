@@ -2,45 +2,36 @@ FROM dunglas/frankenphp:php8.2-bookworm
 
 # Install dependencies
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip \
-    nodejs \
-    npm
+    git curl libpng-dev libonig-dev libxml2-dev zip unzip nodejs npm \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Install PHP extensions including GD
+# Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Set working directory
 WORKDIR /app
 
-# Copy files
+# Copy and install dependencies
+COPY composer.json composer.lock package.json package-lock.json ./
+RUN composer install --optimize-autoloader --no-dev --no-scripts --no-interaction
+RUN npm ci
+
+# Copy application
 COPY . .
 
-# Install PHP dependencies
-RUN composer install --optimize-autoloader --no-dev --no-scripts --no-interaction
+# Build assets
+RUN npm run build && npm prune --omit=dev
 
-# Install Node dependencies and build
-RUN npm ci && npm run build && npm prune --omit=dev
+# Setup permissions
+RUN mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs bootstrap/cache \
+    && chmod -R 777 storage bootstrap/cache
 
-# Laravel setup - Create directories and set permissions
-RUN mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs bootstrap/cache && \
-    chmod -R 777 storage bootstrap/cache
+# Copy start script
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
 EXPOSE 8080
 
-# Startup script with proper error handling
-CMD php artisan config:clear && \
-    php artisan cache:clear && \
-    php artisan migrate --force && \
-    php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache && \
-    php artisan serve --host=0.0.0.0 --port=8080
+CMD ["/start.sh"]
