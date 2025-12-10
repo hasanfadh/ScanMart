@@ -13,22 +13,21 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
 
-# Copy and install dependencies
-COPY composer.json composer.lock package.json package-lock.json ./
-RUN composer install --optimize-autoloader --no-dev --no-scripts --no-interaction
-RUN npm ci
-
-# Copy application
+# Copy all files
 COPY . .
 
+# Install dependencies
+RUN composer install --optimize-autoloader --no-dev --no-interaction
+RUN npm ci
+
 # Build assets
-RUN npm run build && npm prune --omit=dev
+RUN npm run build
 
-# Setup permissions
-RUN mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs bootstrap/cache \
-    && chmod -R 777 storage bootstrap/cache
+# Setup Laravel
+RUN mkdir -p storage/framework/{sessions,views,cache,testing} storage/logs bootstrap/cache
+RUN chmod -R 777 storage bootstrap/cache
 
-# Copy start script
+# Start script
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
